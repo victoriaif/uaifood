@@ -16,12 +16,12 @@ const {
  *   description: User operations
  */
 
-
 /**
  * @swagger
  * /user:
  *   post:
  *     summary: Create a new user
+ *     tags: [Users]
  *     description: Adds a new user to the system based on the provided information.
  *     requestBody:
  *       required: true
@@ -58,6 +58,7 @@ router.post('/', createUser);
  * /user:
  *   get:
  *     summary: List all users
+ *     tags: [Users]
  *     description: Returns a list of all registered users.
  *     responses:
  *       200:
@@ -70,6 +71,7 @@ router.get('/', listUsers);
  * /user/{id}:
  *   get:
  *     summary: Get user by ID
+ *     tags: [Users]
  *     description: Returns details of a specific user.
  *     parameters:
  *       - in: path
@@ -91,6 +93,7 @@ router.get('/:id', getUserById);
  * /user/{id}:
  *   put:
  *     summary: Update a user
+ *     tags: [Users]
  *     description: Updates the data of an existing user.
  *     parameters:
  *       - in: path
@@ -129,6 +132,7 @@ router.put('/:id', updateUser);
  * /user/{id}:
  *   delete:
  *     summary: Delete a user
+ *     tags: [Users]
  *     description: Removes a user from the system by ID.
  *     parameters:
  *       - in: path
