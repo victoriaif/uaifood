@@ -11,6 +11,14 @@ const {
 
 /**
  * @swagger
+ * tags:
+ *   name: User
+ *   description: User operations
+ */
+
+
+/**
+ * @swagger
  * /user:
  *   post:
  *     summary: Create a new user
