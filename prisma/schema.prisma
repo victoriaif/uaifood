@@ -14,12 +14,86 @@ datasource db {
 }
 
 
-model Usuario {
-id Int @id @default(autoincrement())
-nome String
-email String @unique
-senha String
-data_nascimento DateTime
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+model User {
+  id           BigInt    @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  password     String
+  birthDate    DateTime
+  phone        String?
+  type         UserType
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  addressId    BigInt?
+  address      Address?  @relation(fields: [addressId], references: [id])
+  ordersAsClient   Order[]   @relation("Client")
+  ordersCreatedBy  Order[]   @relation("CreatedBy")
+}
+
+model Address {
+  id       BigInt   @id @default(autoincrement())
+  street   String
+  number   String
+  district String
+  city     String
+  state    String
+  zipCode  String
+  users    User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id            BigInt         @id @default(autoincrement())
+  clientId      BigInt
+  client        User           @relation("Client", fields: [clientId], references: [id])
+  paymentMethod PaymentMethod
+  status        String
+  createdById   BigInt?
+  createdBy     User?          @relation("CreatedBy", fields: [createdById], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id         BigInt    @id @default(autoincrement())
+  orderId    BigInt
+  order      Order     @relation(fields: [orderId], references: [id])
+  itemId     BigInt
+  item       Item      @relation(fields: [itemId], references: [id])
+  quantity   Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Item {
+  id         BigInt    @id @default(autoincrement())
+  description String
+  unitPrice   Float
+  categoryId  BigInt
+  category    Category  @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  orderItems  OrderItem[]
+}
+
+model Category {
+  id          BigInt    @id @default(autoincrement())
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  items       Item[]
+}
+
+enum UserType {
+  CLIENT
+  ADMIN
+}
+
+enum PaymentMethod {
+  CASH
+  DEBIT
+  CREDIT
+  PIX
 }
